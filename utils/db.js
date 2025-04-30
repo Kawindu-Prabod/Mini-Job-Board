@@ -1,0 +1,11 @@
+import { Pool } from 'pg';
+
+// Use environment variable from .env
+const connectionString = process.env.DATABASE_URL;
+
+export const pool = new Pool({
+  connectionString,
+  ssl: {
+    rejectUnauthorized: false, // Required for Supabase SSL
+  },
+});
