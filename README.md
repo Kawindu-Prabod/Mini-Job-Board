@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧑‍💼 Job Portal Web App
 
-## Getting Started
+This is a full-stack **Job Portal** web application built with **Next.js**, **Tailwind CSS**, and **Postgresql** (via Supabase). It allows administrators to register, log in, publish job vacancies, and manage their own job listings.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Tech Stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Frontend**: Next.js 14, React, Tailwind CSS
+- **Backend**: Next.js API Routes
+- **Database**: PostgreSQL (Supabase)
+- **Auth Handling**: Simulated session (via `localStorage`)
+- **Deployment Ready**: Structured for Vercel or custom deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧱 Database Schema
 
-## Learn More
+### `admin` Table
+| Column     | Type     | Notes                 |
+|------------|----------|-----------------------|
+| email      | TEXT     | Primary Key           |
+| first_name | TEXT     |                       |
+| last_name  | TEXT     |                       |
+| password   | TEXT     | Hashed/Plaintext      |
 
-To learn more about Next.js, take a look at the following resources:
+### `jobs` Table
+| Column       | Type    | Notes                           |
+|--------------|---------|---------------------------------|
+| id           | SERIAL  | Primary Key                     |
+| user_email   | TEXT    | Foreign key to `admin.email`    |
+| title        | TEXT    | Job title                       |
+| company      | TEXT    | Company name                    |
+| location_type| TEXT    | `remote`, `onsite`, or `hybrid` |
+| location     | TEXT    | Conditional based on type       |
+| job_type     | TEXT    | `full-time`, `part-time`, etc..  |
+| description  | TEXT    | Job description                 |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🔐 Session Handling
 
-## Deploy on Vercel
+- On login, `sessionStatus` and `email` are saved in `localStorage`.
+- Sessions expire after 15 minutes via timeout logic.
+- Access to `/profile` is gated — unauthenticated users are redirected to `/login`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📦 Features
+
+- ✅ **Admin Sign Up & Login**
+- ✅ **Post New Job Modal**
+- ✅ **"My Jobs" Section in Profile**
+- ✅ **Delete Job Functionality**
+- ✅ **Protected Routes via LocalStorage Check**
+- ✅ **Responsive UI with Dark Mode**
+- ✅ **API Routes for Secure DB Access**
+
+---
+
+<b>Make a .env file with DATABASE_URL=your-supabase-postgres-connection-string</b>
