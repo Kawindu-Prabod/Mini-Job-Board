@@ -157,7 +157,7 @@ const Navbar = () => {
       <div className="flex items-center space-x-4">
 
 
-        {/* How much time left simulation
+        {/* How much time left simulation*/}
         {timeLeft !== null && (
           <span className="text-sm text-gray-600 ml-4">
             Session expires in: {Math.floor(timeLeft / 60000)}:
@@ -168,12 +168,12 @@ const Navbar = () => {
 
 
         {/* Simulated Session Switch (Dev Only) */}
-        {/* <button
+        { <button
           onClick={toggleSession}
           className="bg-yellow-200 px-2 py-1 rounded text-sm font-mono hover:bg-yellow-300"
         >
           Toggle Session ({sessionStatus === 1 ? "Active" : "Inactive"})
-        </button> */}
+        </button> }
 
         {sessionStatus === 1 ? (
           <div className="relative">
