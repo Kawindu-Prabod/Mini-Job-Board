@@ -16,7 +16,15 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
-    return NextResponse.json({ message: 'Login successful' });
+    const user = result.rows[0];
+
+    return NextResponse.json({
+      message: 'Login successful',
+      email: user.email,
+      fname: user.fname,
+      lname: user.lname,
+      password: user.password,
+    });
   } catch (err) {
     console.error('Login error:', err);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });

@@ -7,13 +7,22 @@ const Navbar = () => {
   const [sessionStatus, setSessionStatus] = useState(0); // 0 = logged out, 1 = logged in
   const [showDropdown, setShowDropdown] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
-
+  const [user, setUser] = useState(null);
 
   // Load session status from localStorage
   useEffect(() => {
     const status = localStorage.getItem("sessionStatus");
     setSessionStatus(parseInt(status) || 0);
   }, []);
+  // Set User
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setUser(user); // use a state variable to store user
+    }
+  }, []);
+
 
   // Auto logout after 15 minutes (optional)
   // useEffect(() => {
@@ -31,12 +40,12 @@ const Navbar = () => {
     if (sessionStatus === 1) {
       let logoutTimer;
       let lastActivityTime;
-  
+
       const startLogoutTimer = () => {
         logoutTimer = setTimeout(() => {
           const now = Date.now();
           const inactiveTime = now - lastActivityTime;
-  
+
           if (inactiveTime >= 15 * 60 * 1000) {
             setSessionStatus(0);
             localStorage.setItem("sessionStatus", "0");
@@ -47,24 +56,24 @@ const Navbar = () => {
           }
         }, 15 * 60 * 1000 + 1000);
       };
-  
+
       const resetTimer = () => {
         lastActivityTime = Date.now();
         localStorage.setItem("lastActivityTime", lastActivityTime.toString());
         clearTimeout(logoutTimer);
         startLogoutTimer();
       };
-  
+
       // Initialize once on mount
       lastActivityTime = parseInt(localStorage.getItem("lastActivityTime")) || Date.now();
       startLogoutTimer();
-  
+
       // Listen for user activity
       window.addEventListener("mousemove", resetTimer);
       window.addEventListener("keydown", resetTimer);
       window.addEventListener("focus", resetTimer);
       window.addEventListener("click", resetTimer);
-  
+
       return () => {
         clearTimeout(logoutTimer);
         window.removeEventListener("mousemove", resetTimer);
@@ -74,28 +83,28 @@ const Navbar = () => {
       };
     }
   }, [sessionStatus]);
-  
+
 
   //Toggle Session
   const toggleSession = () => {
     const newStatus = sessionStatus === 1 ? 0 : 1;
     setSessionStatus(newStatus);
     localStorage.setItem("sessionStatus", newStatus.toString());
-  
+
     if (newStatus === 1) {
       const now = Date.now();
       const expiresAt = now + 15 * 60 * 1000;
-  
+
       localStorage.setItem("sessionExpiresAt", expiresAt.toString());
       localStorage.setItem("lastActivityTime", now.toString()); // ✅ This line was missing
     } else {
       localStorage.removeItem("sessionExpiresAt");
       localStorage.removeItem("lastActivityTime");
     }
-  
+
     location.reload(); // optional brute force refresh
   };
-  
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -106,6 +115,7 @@ const Navbar = () => {
         setSessionStatus(0);
         localStorage.setItem("sessionStatus", "0");
         localStorage.removeItem("lastActivityTime");
+        localStorage.removeItem("user");
         setShowDropdown(false);
         setTimeLeft(null);
         location.reload();
@@ -122,26 +132,39 @@ const Navbar = () => {
     setSessionStatus(0);
     localStorage.setItem("sessionStatus", "0");
     localStorage.removeItem("sessionExpiresAt");
-    localStorage.removeItem("lastActivityTime"); // ✅ this line
+    localStorage.removeItem("lastActivityTime");
     setShowDropdown(false);
+    localStorage.removeItem("user");
     location.reload();
   };
-  
+
 
   return (
-    <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
+    <nav className="bg-grey shadow-md px-6 py-4 flex justify-between items-center">
       <div className="flex space-x-6 ml-4">
         <Link href="/" className="text-lg font-semibold hover:text-blue-600">Home</Link>
         <Link href="/jobs" className="text-lg font-semibold hover:text-blue-600">Jobs</Link>
       </div>
 
+      {/*Show Welcome User*/}
+      {sessionStatus === 1 && user && (
+        <span className="text-lg font-semibold">
+          Welcome, {user.fname} {user.lname}
+        </span>
+      )}
+
+
       <div className="flex items-center space-x-4">
+
+
+        {/*How much time left simulation*/}
         {timeLeft !== null && (
           <span className="text-sm text-gray-600 ml-4">
             Session expires in: {Math.floor(timeLeft / 60000)}:
             {(Math.floor((timeLeft % 60000) / 1000)).toString().padStart(2, "0")}
           </span>
         )}
+
 
 
         {/* Simulated Session Switch (Dev Only) */}

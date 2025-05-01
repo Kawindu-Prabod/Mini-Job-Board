@@ -26,17 +26,26 @@ export default function LoginPage() {
             setError(data.error || 'Login failed');
         } else {
             localStorage.setItem('sessionStatus', '1');
-            
+            localStorage.setItem('user', JSON.stringify({
+                fname: data.fname,
+                lname: data.lname,
+                email: data.email,
+                password: data.password,
+            }));
             // Set exact expiration timestamp (15 minutes from now)
             const expiresAt = Date.now() + 15 * 60 * 1000;
             localStorage.setItem('sessionExpiresAt', expiresAt.toString());
-            router.push('/');
+            router.push('/profile');
         }
     };
 
     const goToSignup = () => {
         router.push('/signup');
     };
+
+    const handleBack = () => {
+        router.push("/");
+      };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -76,6 +85,14 @@ export default function LoginPage() {
                         Sign Up
                     </button>
                 </div>
+                {/* Back Button */}
+                <button
+                    type="button"
+                    onClick={handleBack}
+                    className="w-full bg-gray-200 text-gray-800 py-2 rounded hover:bg-gray-300 transition"
+                >
+                    ← Back to Home
+                </button>
             </div>
         </div>
     );
