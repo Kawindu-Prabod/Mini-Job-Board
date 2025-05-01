@@ -146,8 +146,8 @@ const Navbar = () => {
         <Link href="/jobs" className="text-lg font-semibold hover:text-blue-600">Jobs</Link>
       </div>
 
-      {/*Show Welcome User*/}
-      {sessionStatus === 1 && user && (
+      {/*Show Welcome User}
+      {/*sessionStatus === 1 && user && (
         <span className="text-lg font-semibold">
           Welcome, {user.fname} {user.lname}
         </span>
@@ -158,12 +158,12 @@ const Navbar = () => {
 
 
         {/* How much time left simulation*/}
-        {timeLeft !== null && (
+        {/*timeLeft !== null && (
           <span className="text-sm text-gray-600 ml-4">
             Session expires in: {Math.floor(timeLeft / 60000)}:
             {(Math.floor((timeLeft % 60000) / 1000)).toString().padStart(2, "0")}
           </span>
-        )}
+        )*/}
 
 
 
