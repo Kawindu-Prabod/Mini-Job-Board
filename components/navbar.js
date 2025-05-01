@@ -85,25 +85,25 @@ const Navbar = () => {
   }, [sessionStatus]);
 
 
-  //Toggle Session
-  const toggleSession = () => {
-    const newStatus = sessionStatus === 1 ? 0 : 1;
-    setSessionStatus(newStatus);
-    localStorage.setItem("sessionStatus", newStatus.toString());
+  // //Toggle Session
+  // const toggleSession = () => {
+  //   const newStatus = sessionStatus === 1 ? 0 : 1;
+  //   setSessionStatus(newStatus);
+  //   localStorage.setItem("sessionStatus", newStatus.toString());
 
-    if (newStatus === 1) {
-      const now = Date.now();
-      const expiresAt = now + 15 * 60 * 1000;
+  //   if (newStatus === 1) {
+  //     const now = Date.now();
+  //     const expiresAt = now + 15 * 60 * 1000;
 
-      localStorage.setItem("sessionExpiresAt", expiresAt.toString());
-      localStorage.setItem("lastActivityTime", now.toString()); // ✅ This line was missing
-    } else {
-      localStorage.removeItem("sessionExpiresAt");
-      localStorage.removeItem("lastActivityTime");
-    }
+  //     localStorage.setItem("sessionExpiresAt", expiresAt.toString());
+  //     localStorage.setItem("lastActivityTime", now.toString()); // ✅ This line was missing
+  //   } else {
+  //     localStorage.removeItem("sessionExpiresAt");
+  //     localStorage.removeItem("lastActivityTime");
+  //   }
 
-    location.reload(); // optional brute force refresh
-  };
+  //   location.reload(); // optional brute force refresh
+  // };
 
 
   useEffect(() => {
@@ -157,7 +157,7 @@ const Navbar = () => {
       <div className="flex items-center space-x-4">
 
 
-        {/*How much time left simulation*/}
+        {/* How much time left simulation
         {timeLeft !== null && (
           <span className="text-sm text-gray-600 ml-4">
             Session expires in: {Math.floor(timeLeft / 60000)}:
@@ -168,12 +168,12 @@ const Navbar = () => {
 
 
         {/* Simulated Session Switch (Dev Only) */}
-        <button
+        {/* <button
           onClick={toggleSession}
           className="bg-yellow-200 px-2 py-1 rounded text-sm font-mono hover:bg-yellow-300"
         >
           Toggle Session ({sessionStatus === 1 ? "Active" : "Inactive"})
-        </button>
+        </button> */}
 
         {sessionStatus === 1 ? (
           <div className="relative">
