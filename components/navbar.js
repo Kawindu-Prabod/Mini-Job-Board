@@ -151,7 +151,7 @@ const Navbar = () => {
         <span className="text-lg font-semibold">
           Welcome, {user.fname} {user.lname}
         </span>
-      )}
+      )*/}
 
 
       <div className="flex items-center space-x-4">
