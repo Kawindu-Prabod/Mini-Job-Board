@@ -64,7 +64,7 @@ export default function JobsPage() {
                     
                             <h2 className="text-lg font-semibold">{job.title}</h2>
                             <p className="text-sm text-gray-600">{job.company}</p>
-                            <p>{job.description}</p>
+                            <p>{job.location_type}</p>
                         </div>
                     ))}
                 </div>
