@@ -71,7 +71,7 @@ export default function JobsPage() {
                 {/* Modal */}
                 {isModalOpen && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                        <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 md:w-1/2 relative">
+                        <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 md:w-1/2 max-h-[90vh] overflow-y-auto relative">
                             <button
                                 onClick={closeModal}
                                 className="absolute top-2 right-2 text-gray-700 hover:text-red-500 text-2xl font-bold transition-colors duration-200"
@@ -84,7 +84,12 @@ export default function JobsPage() {
                             <p className="mb-2"><strong>Company:</strong> {selectedJob?.company}</p>
                             <p className="mb-2"><strong>Location:</strong> {selectedJob?.location}</p>
                             <p className="mb-2"><strong>Job Type:</strong> {selectedJob?.job_type}</p>
-                            <p className="mb-4"><strong>Description:</strong> {selectedJob?.description}</p>
+                            <div className="mb-4">
+                                <strong>Description:</strong>
+                                <div className="mt-1 max-h-60 overflow-y-auto p-2 bg-gray-100 rounded text-sm leading-relaxed">
+                                    {selectedJob?.description}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}
