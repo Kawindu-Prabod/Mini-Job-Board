@@ -1,64 +1,52 @@
-"use client"; // for App Router
+"use client";
 
-import { useEffect, useState, useRef } from "react";
-import Navbar from "../../components/navbar"; // adjust the path accordingly
+import { useEffect, useState } from "react";
+import Navbar from "../../components/navbar";
 
 export default function JobsPage() {
     const [jobs, setJobs] = useState([]);
     const [page, setPage] = useState(1);
-    const [selectedJob, setSelectedJob] = useState(null); // Store selected job for modal
-    const [isModalOpen, setIsModalOpen] = useState(false); // Controls modal visibility
-    const loaderRef = useRef(null);
+    const [hasNext, setHasNext] = useState(true);
+    const [selectedJob, setSelectedJob] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Fetch jobs from API
+    const JOBS_PER_PAGE = 15;
+
     const fetchJobs = (page) => {
         fetch(`/api/jobs?page=${page}`)
             .then((res) => res.json())
             .then((data) => {
-                // Append new jobs only if they are not already in the list
-                setJobs((prev) => {
-                    const newJobs = data.jobs.filter(
-                        (newJob) => !prev.some((job) => job.id === newJob.id)
-                    );
-                    return [...prev, ...newJobs];
-                });
+                setJobs(data.jobs);
+                // If fewer than 15 jobs returned, we’re likely at the end
+                setHasNext(data.jobs.length === JOBS_PER_PAGE);
             })
-            .catch((err) => console.error("Failed to fetch jobs", err));
+            .catch((err) => {
+                console.error("Failed to fetch jobs", err);
+                setJobs([]);
+                setHasNext(false);
+            });
     };
 
     useEffect(() => {
         fetchJobs(page);
     }, [page]);
 
-    // Intersection Observer for infinite scroll
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setPage((prev) => prev + 1);
-                }
-            },
-            { threshold: 1 }
-        );
-
-        const target = loaderRef.current;
-        if (target) observer.observe(target);
-
-        return () => {
-            if (target) observer.unobserve(target);
-        };
-    }, []);
-
-    // Open modal with job details
     const openModal = (job) => {
         setSelectedJob(job);
         setIsModalOpen(true);
     };
 
-    // Close modal
     const closeModal = () => {
         setIsModalOpen(false);
         setSelectedJob(null);
+    };
+
+    const handleNext = () => {
+        if (hasNext) setPage((prev) => prev + 1);
+    };
+
+    const handlePrevious = () => {
+        if (page > 1) setPage((prev) => prev - 1);
     };
 
     return (
@@ -69,33 +57,30 @@ export default function JobsPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     {jobs.map((job) => (
                         <div
-                            key={job.id}
-                            className="border p-4 rounded shadow cursor-pointer"
-                            onClick={() => openModal(job)} // Open modal on job click
-                        >
+                        key={job.id}
+                        className="border p-4 rounded shadow cursor-pointer hover:shadow-lg transition-shadow"
+                        onClick={() => openModal(job)}
+                    >
+                    
                             <h2 className="text-lg font-semibold">{job.title}</h2>
+                            <p className="text-sm text-gray-600">{job.company}</p>
                             <p>{job.description}</p>
                         </div>
                     ))}
                 </div>
-
-                {/* Infinity Scroll Anchor */}
-                <div ref={loaderRef} className="h-10 bg-transparent"></div>
-
-                {/* Job Modal */}
+                {/* Modal */}
                 {isModalOpen && (
-                    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                         <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 md:w-1/2 relative">
-                            {/* Close Button inside the modal card */}
                             <button
-                                className="absolute top-2 right-2 text-xl font-bold"
                                 onClick={closeModal}
+                                className="absolute top-2 right-2 text-gray-700 hover:text-red-500 text-2xl font-bold transition-colors duration-200"
+                                aria-label="Close"
                             >
-                                &times;
+                                ×
                             </button>
-                            <h2 className="text-2xl font-semibold mb-4">
-                                {selectedJob?.title}
-                            </h2>
+
+                            <h2 className="text-2xl font-semibold mb-4">{selectedJob?.title}</h2>
                             <p className="mb-2"><strong>Company:</strong> {selectedJob?.company}</p>
                             <p className="mb-2"><strong>Location:</strong> {selectedJob?.location}</p>
                             <p className="mb-2"><strong>Job Type:</strong> {selectedJob?.job_type}</p>
@@ -103,6 +88,25 @@ export default function JobsPage() {
                         </div>
                     </div>
                 )}
+
+                {/* Pagination Controls */}
+                <div className="flex justify-center items-center gap-4 mt-6">
+                    <button
+                        onClick={handlePrevious}
+                        disabled={page === 1}
+                        className={`px-4 py-2 rounded ${page === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-700"}`}
+                    >
+                        Previous
+                    </button>
+                    <span className="font-semibold">Page {page}</span>
+                    <button
+                        onClick={handleNext}
+                        disabled={!hasNext}
+                        className={`px-4 py-2 rounded ${!hasNext ? "bg-gray-300 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-700"}`}
+                    >
+                        Next
+                    </button>
+                </div>
             </main>
         </div>
     );
