@@ -9,19 +9,25 @@ const Navbar = () => {
   const [timeLeft, setTimeLeft] = useState(null);
   const [user, setUser] = useState(null);
 
-  // Load session status from localStorage
   useEffect(() => {
     const status = localStorage.getItem("sessionStatus");
-    setSessionStatus(parseInt(status) || 0);
-  }, []);
-  // Set User
-  useEffect(() => {
     const storedUser = localStorage.getItem("user");
+  
+    // Check if sessionStatus is '1' but no user is found — suspicious session!
+    if (status === "1" && !storedUser) {
+      console.warn("Suspicious session detected — forcing logout.");
+      localStorage.clear(); // Clear localStorage to reset session
+      location.reload();    // Reload the page to reflect changes
+      return;
+    }
+  
+    // If no suspicious session, set the session status and user info
+    setSessionStatus(parseInt(status) || 0);
     if (storedUser) {
-      const user = JSON.parse(storedUser);
-      setUser(user); // use a state variable to store user
+      setUser(JSON.parse(storedUser)); // Parse and set user
     }
   }, []);
+  
 
 
   // Auto logout after 15 minutes (optional)
@@ -146,24 +152,24 @@ const Navbar = () => {
         <Link href="/jobs" className="text-lg font-semibold hover:text-blue-600">Jobs</Link>
       </div>
 
-      {/*Show Welcome User}
-      {/*sessionStatus === 1 && user && (
+      {/*Show Welcome User*/}
+      {sessionStatus === 1 && user && (
         <span className="text-lg font-semibold">
           Welcome, {user.fname} {user.lname}
         </span>
-      )*/}
+      )}
 
 
       <div className="flex items-center space-x-4">
 
 
-        {/* How much time left simulation*/}
-        {/*timeLeft !== null && (
+        {/* How much time left simulation
+        {timeLeft !== null && (
           <span className="text-sm text-gray-600 ml-4">
             Session expires in: {Math.floor(timeLeft / 60000)}:
             {(Math.floor((timeLeft % 60000) / 1000)).toString().padStart(2, "0")}
           </span>
-        )*/}
+        )}
 
 
 
