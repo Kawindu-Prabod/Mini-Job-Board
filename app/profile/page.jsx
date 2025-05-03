@@ -342,14 +342,24 @@ export default function ProfilePage() {
                 }
                 {selectedJob && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-                        <div className="bg-white rounded-lg p-6 max-w-lg w-full space-y-4 relative shadow-lg">
-                            <button onClick={() => setSelectedJob(null)} className="absolute top-3 right-4 text-xl font-bold">×</button>
+                        <div className="bg-white rounded-lg p-6 max-w-lg w-full max-h-[80vh] overflow-y-auto relative shadow-lg">
+                            <button
+                                onClick={() => setSelectedJob(null)}
+                                className="absolute top-3 right-4 text-xl font-bold"
+                            >
+                                ×
+                            </button>
                             <h3 className="text-xl font-semibold">{selectedJob.title}</h3>
                             <p><strong>Company:</strong> {selectedJob.company}</p>
                             <p><strong>Location Type:</strong> {selectedJob.location_type}</p>
                             {selectedJob.location && <p><strong>Location:</strong> {selectedJob.location}</p>}
                             <p><strong>Job Type:</strong> {selectedJob.job_type}</p>
-                            <p><strong>Description:</strong> {selectedJob.description}</p>
+
+                            {/* Scrollable Description Box */}
+                            <div className="border p-3 rounded bg-gray-50 max-h-40 overflow-y-auto">
+                                <p><strong>Description:</strong></p>
+                                <p className="text-sm text-gray-700 whitespace-pre-wrap">{selectedJob.description}</p>
+                            </div>
 
                             <div className="flex justify-end space-x-2 mt-4">
                                 <button
