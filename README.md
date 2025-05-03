@@ -9,7 +9,7 @@ This is a full-stack **Job Portal** web application built with **Next.js**, **Ta
 - **Frontend**: Next.js 14, React, Tailwind CSS
 - **Backend**: Next.js API Routes
 - **Database**: PostgreSQL (Supabase)
-- **Auth Handling**: Simulated session (via `localStorage`)
+- **Auth Handling**: Using session
 - **Deployment Ready**: Structured for Vercel or custom deployment
 
 ---
