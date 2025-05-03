@@ -17,7 +17,7 @@ export default function HomePage() {
 
   const handleStartHiring = () => {
     if (sessionStatus === 1) {
-      router.push("/post-job");
+      router.push("/profile");
     } else {
       router.push("/login");
     }
