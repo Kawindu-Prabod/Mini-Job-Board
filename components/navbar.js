@@ -164,9 +164,9 @@ const Navbar = () => {
 
       {/*Show Welcome User*/}
       {sessionStatus === 1 && user && (
-        <span className="text-lg font-semibold">
+        <div className="text-lg font-semibold">
           Welcome, {user.fname} {user.lname}
-        </span>
+        </div>
       )}
 
 
