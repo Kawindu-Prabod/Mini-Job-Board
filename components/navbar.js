@@ -152,6 +152,10 @@ const Navbar = () => {
         <Link href="/jobs" className="text-lg font-semibold hover:text-blue-600">Jobs</Link>
       </div>
 
+      <div className="flex-grow text-center">
+        <h1 className="text-xl font-bold text-gray-800">MyJobBoard</h1>
+      </div>
+
       {/*Show Welcome User*/}
       {sessionStatus === 1 && user && (
         <span className="text-lg font-semibold">
