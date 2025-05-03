@@ -3,8 +3,9 @@ import { NextResponse } from 'next/server'; // Import NextResponse
 
 // Handle GET requests to fetch jobs
 export async function GET(req) {
-    const { page = 1 } = req.nextUrl.searchParams; // Get page from query params
-    const limit = 10; // Number of jobs per page
+    const pageParam = req.nextUrl.searchParams.get('page');
+    const page = parseInt(pageParam || '1', 10);
+    const limit = 15; // Number of jobs per page
     const offset = (page - 1) * limit; // Calculate offset for pagination
 
     try {
