@@ -10,7 +10,6 @@ This is a full-stack **Job Portal** web application built with **Next.js**, **Ta
 - **Backend**: Next.js API Routes
 - **Database**: PostgreSQL (Supabase)
 - **Auth Handling**: Using session
-- **Deployment Ready**: Structured for Vercel or custom deployment
 
 ---
 
@@ -53,9 +52,11 @@ This is a full-stack **Job Portal** web application built with **Next.js**, **Ta
 - ✅ **"My Jobs" Section in Profile**
 - ✅ **Delete Job Functionality**
 - ✅ **Protected Routes via LocalStorage Check**
-- ✅ **Responsive UI with Dark Mode**
 - ✅ **API Routes for Secure DB Access**
 
 ---
+<H2>Instructions</H2>
 
-<b>Make a .env file with DATABASE_URL=your-supabase-postgres-connection-string</b>
+1. <b>Make a .env file with DATABASE_URL=your-supabase-postgres-connection-string</b>
+2. When clicking on Jobs, it will open a pop-up. If you are in the Profile, you'll be able to delete it.
+
