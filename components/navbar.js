@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [sessionStatus, setSessionStatus] = useState(0); // 0 = logged out, 1 = logged in
   const [showDropdown, setShowDropdown] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
   const [user, setUser] = useState(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const status = localStorage.getItem("sessionStatus");
@@ -148,10 +150,14 @@ const Navbar = () => {
   return (
     <nav className="bg-grey shadow-md px-6 py-4 flex justify-between items-center">
       <div className="flex space-x-6 ml-4">
-        <Link href="/" className="text-lg font-semibold hover:text-blue-600">Home</Link>
-        <Link href="/jobs" className="text-lg font-semibold hover:text-blue-600">Jobs</Link>
+        {pathname !== "/" && (
+          <Link href="/" className="text-lg font-semibold hover:text-blue-600">Home</Link>
+        )}
+        {pathname !== "/jobs" && (
+          <Link href="/jobs" className="text-lg font-semibold hover:text-blue-600">Jobs</Link>
+        )}
       </div>
-
+        
       <div className="flex-grow text-center">
         <h1 className="text-xl font-bold text-gray-800">MyJobBoard</h1>
       </div>
